@@ -802,11 +802,17 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, ((NSString *)value).mutableCopy);
                         }
                     } else if ([value isKindOfClass:[NSNumber class]]) {
+                       static NSDecimalNumberHandler *handler = nil;
+                        if (!handler){
+                            handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundPlain scale:14 raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+                        }
+                        NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[((NSNumber *)value) decimalValue]];
+                        decNum = [decNum decimalNumberByAdding:NSDecimalNumber.zero withBehavior:handler];
                         ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model,
                                                                        meta->_setter,
                                                                        (meta->_nsType == YYEncodingTypeNSString) ?
-                                                                       ((NSNumber *)value).stringValue :
-                                                                       ((NSNumber *)value).stringValue.mutableCopy);
+                                                                       decNum.stringValue :
+                                                                       decNum.stringValue.mutableCopy);
                     } else if ([value isKindOfClass:[NSData class]]) {
                         NSMutableString *string = [[NSMutableString alloc] initWithData:value encoding:NSUTF8StringEncoding];
                         ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, string);
@@ -834,7 +840,12 @@ static void ModelSetValueForProperty(__unsafe_unretained id model,
                         if ([value isKindOfClass:[NSDecimalNumber class]]) {
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, value);
                         } else if ([value isKindOfClass:[NSNumber class]]) {
+                            static NSDecimalNumberHandler *handler = nil;
+                            if (!handler){
+                                handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:NSRoundPlain scale:14 raiseOnExactness:NO raiseOnOverflow:NO raiseOnUnderflow:NO raiseOnDivideByZero:NO];
+                            }
                             NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithDecimal:[((NSNumber *)value) decimalValue]];
+                            decNum = [decNum decimalNumberByAdding:NSDecimalNumber.zero withBehavior:handler];
                             ((void (*)(id, SEL, id))(void *) objc_msgSend)((id)model, meta->_setter, decNum);
                         } else if ([value isKindOfClass:[NSString class]]) {
                             NSDecimalNumber *decNum = [NSDecimalNumber decimalNumberWithString:value];
