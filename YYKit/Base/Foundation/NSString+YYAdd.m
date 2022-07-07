@@ -386,7 +386,8 @@ YYSYNTH_DUMMY_CLASS(NSString_YYAdd)
 }
 
 - (NSNumber *)numberValue {
-    return [NSNumber numberWithString:self];
+//    return [NSNumber numberWithString:self];
+    return @0;
 }
 
 - (NSData *)dataValue {

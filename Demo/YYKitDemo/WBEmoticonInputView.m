@@ -59,7 +59,7 @@
         _imageView.image = [WBStatusHelper imageNamed:@"compose_emotion_delete"];
     } else if (_emoticon) {
         if (_emoticon.type == WBEmoticonTypeEmoji) {
-            NSNumber *num = [NSNumber numberWithString:_emoticon.code];
+            NSNumber *num = @0;
             NSString *str = [NSString stringWithUTF32Char:num.unsignedIntValue];
             if (str) {
                 UIImage *img = [UIImage imageWithEmoji:str size:_imageView.width];
@@ -455,7 +455,7 @@
                 text = cell.emoticon.chs;
             } break;
             case WBEmoticonTypeEmoji: {
-                NSNumber *num = [NSNumber numberWithString:cell.emoticon.code];
+                NSNumber *num = @0;
                 text = [NSString stringWithUTF32Char:num.unsignedIntValue];
             } break;
             default:break;

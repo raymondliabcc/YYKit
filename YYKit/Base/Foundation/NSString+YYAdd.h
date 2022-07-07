@@ -375,7 +375,7 @@ NS_ASSUME_NONNULL_BEGIN
  Try to parse this string and returns an `NSNumber`.
  @return Returns an `NSNumber` if parse succeed, or nil if an error occurs.
  */
-- (nullable NSNumber *)numberValue;
+//- (nullable NSNumber *)numberValue;
 
 /**
  Returns an NSData using UTF-8 encoding.
